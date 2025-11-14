@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Medicines - DoseFlow</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0D1117;
+    color: #C9D1D9;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    width: 230px;
+    background-color: #090B10;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.8);
+    z-index: 1000;
+  }
+  .sidebar .logo {
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    margin-bottom: 30px;
+    gap: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+  .sidebar .logo img {
+    height: 26px;
+  }
+  .sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-left: 24px;
+  }
+  .sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1rem;
+    color: #8B949E;
+    padding: 8px 10px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+  .sidebar nav a.active,
+  .sidebar nav a:hover {
+    background-color: #2F81F7;
+    color: white;
+  }
+  .main-content {
+    margin-left: 230px;
+    padding: 24px 32px;
+    min-height: 100vh;
+  }
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  .welcome-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.35);
+  }
+  .date-info {
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.35);
+  }
+  .date-info span {
+    margin-right: 8px;
+  }
+  h1.page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+  h2.section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .section-desc {
+    margin-bottom: 24px;
+    color: #8B949E;
+  }
+  .btn {
+    background-color: #2F81F7;
+    border: none;
+    color: white;
+    padding: 10px 18px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .btn:hover {
+    background-color: #1C5CD6;
+  }
+  .btn-secondary {
+    background-color: #1B1F26;
+    color: #8B949E;
+    border: 1px solid #2A2E3A;
+  }
+  .btn-secondary:hover {
+    background-color: #2F81F7;
+    color: white;
+  }
+  .medicines-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #161B22;
+    box-shadow: 0 0 12px rgba(47, 129, 247, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .medicines-table thead {
+    background-color: #0D1117;
+  }
+  .medicines-table th,
+  .medicines-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid #22272E;
+    color: #C9D1D9;
+  }
+  .medicines-table th {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  .medicines-table tbody tr:hover {
+    background-color: #2F81F7;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+  .dosage-pill {
+    background-color: #2F81F7;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+  }
+  .status-pending {
+    color: #B28704;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .status-pending::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #B28704;
+    border-radius: 50%;
+  }
+  .modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0,0,0,0.65);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding: 20px;
+  }
+  .modal.active {
+    display: flex;
+  }
+  .modal-content {
+    background-color: #0D1117;
+    border-radius: 10px;
+    max-width: 700px;
+    width: 100%;
+    padding: 24px 32px;
+    color: white;
+    box-shadow: 0 0 20px #2F81F7;
+    position: relative;
+  }
+  .modal-header {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .modal-desc {
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+  .modal-close {
+    position: absolute;
+    top: 18px; right: 18px;
+    font-size: 1.8rem;
+    color: #8B949E;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .modal-close:hover {
+    color: white;
+  }
+  .modal-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 24px;
+  }
+  .modal-form .full-width {
+    grid-column: 1 / -1;
+  }
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #C9D1D9;
+  }
+  input[type="text"],
+  input[type="date"],
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    background-color: #161B22;
+    border: 1px solid #2A2E3A;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus,
+  input[type="date"]:focus,
+  textarea:focus {
+    border-color: #2F81F7;
+    outline: none;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  .modal-form-btn {
+    margin-top: 24px;
+    grid-column: 2 / 3;
+    justify-self: end;
+  }
+  @media (max-width: 880px) {
+    .modal-form {
+      grid-template-columns: 1fr;
+    }
+    .modal-form-btn {
+      grid-column: 1 / 2;
+      justify-self: stretch;
+    }
+  }
+  @media (max-width: 720px) {
+    .main-content {
+      margin-left: 0;
+      padding: 24px 16px;
+    }
+    .sidebar {
+      position: relative;
+      width: 100%;
+      height: auto;
+      flex-direction: row;
+      padding: 10px 15px;
+      box-shadow: none;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sidebar nav {
+      flex-direction: row;
+      gap: 12px;
+      padding-left: 0;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #2F81F7 transparent;
+    }
+    .sidebar nav a {
+      white-space: nowrap;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+    }
+    .topbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+  }
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo">
+    
+    DoseFlow
+  </div>
+  <nav>
+    <a href="dash.html"><span>🏠</span>Dashboard</a>
+    <li><a href="agora.html">🩺 Agora AI</a> </li>
+    <a href="#" class="active"><span>💊</span>My Medicines</a>
+    <a href="#"><span>📄</span>Prescriptions</a>
+
+    <a href="#"><span>📊</span>Health Charts</a>
+    <a href="#"><span>😊</span>Trackers</a>
+    <a href="#"><span>📈</span>Health Report</a>
+    <a href="#"><span>🏆</span>Achievements</a>
+    <a href="#"><span>🚨</span>Emergency</a>
+    
+  </nav>
+</aside>
+<div class="main-content">
+  <header class="topbar">
+    <h1 class="welcome-text">Welcome Back</h1>
+    <div class="date-info" id="date-info">
+      <span class="day-text"></span>
+      <span class="date-text"></span>
+      <span class="month-text"></span>
+    </div>
+  </header>
+  <h1 class="page-title">My Medicines</h1>
+  <section>
+    <h2 class="section-title">All Medications</h2>
+    <p class="section-desc">A complete list of your current and past medications.</p>
+    <div style="display:flex; gap:12px; margin-bottom: 24px;">
+      <button class="btn btn-secondary">Check Interactions</button>
+      <button class="btn" id="addMedicationBtn">+ Add Medication</button>
+    </div>
+    <table class="medicines-table" aria-label="My Medicines">
+      <thead>
+        <tr>
+          <th>Medication</th>
+          <th>Dosage</th>
+          <th>Frequency</th>
+          <th>Purpose</th>
+          <th>Time</th>
+          <th>Status Today</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Dolo</td>
+          <td><span class="dosage-pill">10mg</span></td>
+          <td>Twice</td>
+          <td>Fever</td>
+          <td>8am</td>
+          <td><span class="status-pending">Pending</span></td>
+          <td>⋮</td>
+        </tr>
+        <tr>
+          <td>paracetamol</td>
+          <td><span class="dosage-pill">10mg</span></td>
+          <td>once</td>
+          <td>N/A</td>
+          <td>4:34 Pm</td>
+          <td><span class="status-pending">Pending</span></td>
+          <td>⋮</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+<div class="modal" id="addMedicationModal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+  <div class="modal-content" role="document">
+    <div class="modal-close" id="closeModalBtn" title="Close modal">&times;</div>
+    <h2 class="modal-header" id="modalTitle">Add New Medication</h2>
+    <p class="modal-desc">Fill in the details below. Click save when you're done.</p>
+    <form class="modal-form" id="medicationForm">
+      <div>
+        <label for="medName">Medication Name</label>
+        <input type="text" id="medName" placeholder="e.g., Lisinopril" required />
+      </div>
+      <div>
+        <label for="dosage">Dosage</label>
+        <input type="text" id="dosage" placeholder="e.g., 10mg" required />
+      </div>
+      <div>
+        <label for="frequency">Frequency</label>
+        <input type="text" id="frequency" placeholder="e.g., Once daily" required />
+      </div>
+      <div>
+        <label for="time">Time</label>
+        <input type="text" id="time" placeholder="e.g., Morning, 8:00 AM" required />
+      </div>
+      <div class="full-width">
+        <label for="purpose">Purpose</label>
+        <input type="text" id="purpose" placeholder="e.g., for Blood Pressure" />
+        <small>What is this medication for? (e.g., Heart, Kidney, etc.)</small>
+      </div>
+      <div>
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" />
+      </div>
+      <div>
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate" />
+      </div>
+      <div class="full-width">
+        <label for="notes">Notes</label>
+        <textarea id="notes" placeholder="e.g., Take with food."></textarea>
+      </div>
+      <button type="submit" class="btn modal-form-btn">Add Medication</button>
+    </form>
+  </div>
+</div>
+<script>
+  function updateDateInfo() {
+    const dateInfo = document.getElementById('date-info');
+    const daySpan = dateInfo.querySelector('.day-text');
+    const dateSpan = dateInfo.querySelector('.date-text');
+    const monthSpan = dateInfo.querySelector('.month-text');
+    const now = new Date();
+    const dayName = now.toLocaleDateString('en-US', { weekday: 'long' });
+    const dayNumber = now.getDate();
+    const monthName = now.toLocaleDateString('en-US', { month: 'long' });
+    daySpan.textContent = dayName + ",";
+    dateSpan.textContent = dayNumber;
+    monthSpan.textContent = monthName;
+  }
+  updateDateInfo();
+  const modal = document.getElementById('addMedicationModal');
+  const openBtn = document.getElementById('addMedicationBtn');
+  const closeBtn = document.getElementById('closeModalBtn');
+  openBtn.addEventListener('click', () => {
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+  });
+  closeBtn.addEventListener('click', () => {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  });
+  window.addEventListener('click', e => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  });
+  const form = document.getElementById('medicationForm');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    alert('Medication added (functionality to be implemented)');
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    form.reset();
+  });
+</script>
+</body>
+</html>
+
+

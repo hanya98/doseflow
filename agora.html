@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agora AI - Voice Health Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+body { margin:0; font-family: 'Poppins', sans-serif; background:#0a0f2f; color:#fff; display:flex; min-height:100vh; }
+.sidebar { width:210px; background:#090c23; padding:25px; border-right:1px solid rgba(255,255,255,0.08); height:100vh; position:sticky; top:0; }
+.sidebar h2 { color:#4eb1ff; font-weight:900; font-size:22px; }
+.sidebar ul { list-style:none; padding:0; margin-top:25px; }
+.sidebar ul li { padding:10px 0; font-weight:500; cursor:pointer; opacity:0.75; display:flex; align-items:center; transition:0.2s; }
+.sidebar ul li:hover { opacity:1; color:#4eb1ff; transform:translateX(5px); }
+.main-content { flex:1; padding:30px; box-sizing:border-box; }
+.header-top { display:flex; justify-content:space-between; align-items:center; padding-bottom:20px; }
+.header-top h1 { font-size:24px; font-weight:800; margin:0; }
+.ai-assistant-badge { background:#4eb1ff; padding:8px 15px; border-radius:20px; font-size:14px; font-weight:700; display:flex; align-items:center; gap:5px; }
+.time-date { font-size:36px; font-weight:800; color:#4eb1ff; margin-bottom:5px; }
+.greeting { font-size:16px; font-weight:500; opacity:0.8; margin-bottom:25px; }
+.content-grid { display:grid; grid-template-columns:2fr 1fr; gap:30px; }
+.card-base { background:#090c23; padding:25px; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; }
+.card-insights { display:flex; flex-direction:column; gap:25px; min-height:500px; max-height:600px; }
+.card-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px; }
+.card-header-left h3 { margin:0; font-size:18px; font-weight:800; }
+.card-header-left p { margin:0; font-size:13px; opacity:0.7; }
+.chat-history { flex-grow:1; overflow-y:auto; padding-right:15px; display:flex; flex-direction:column; gap:15px; }
+.chat-history::-webkit-scrollbar { width:8px; }
+.chat-history::-webkit-scrollbar-track { background:#0c1843; border-radius:10px; }
+.chat-history::-webkit-scrollbar-thumb { background:#4eb1ff; border-radius:10px; }
+.message { padding:12px 15px; border-radius:15px; max-width:85%; line-height:1.5; font-size:14px; box-shadow:0 2px 5px rgba(0,0,0,0.3); }
+.user-message { background:#4eb1ff; margin-left:auto; border-bottom-right-radius:2px; font-weight:500; }
+.ai-message { background:#172a5a; margin-right:auto; border-bottom-left-radius:2px; display:flex; flex-direction:column; gap:8px; }
+.ai-message p { margin:0; }
+.chat-input-area { display:flex; gap:10px; padding-top:15px; border-top:1px solid rgba(255,255,255,0.1); }
+#user-input { flex-grow:1; padding:12px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:#0a0f2f; color:#fff; font-size:14px; }
+#send-button { background:#4eb1ff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; color:#fff; font-weight:700; font-size:14px; display:flex; align-items:center; gap:5px; }
+#send-button:hover:not(:disabled) { background:#2f99e4; }
+#send-button:disabled { background:#172a5a; cursor:not-allowed; opacity:0.6; }
+.loading-indicator { text-align:left; padding:5px 15px; color:#4eb1ff; font-weight:600; font-size:14px; display:flex; align-items:center; gap:10px; }
+.loading-spinner { border:3px solid rgba(255,255,255,0.3); border-radius:50%; border-top:3px solid #4eb1ff; width:14px; height:14px; animation:spin 1s linear infinite; }
+@keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+.citation-section { margin-top:10px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.05); font-size:11px; opacity:0.7; }
+.citation-section a { color:#79d0ff; text-decoration:none; }
+.citation-section a:hover { text-decoration:underline; }
+@media (max-width:1024px){ .content-grid{grid-template-columns:1fr;} .sidebar{width:100%;height:auto;position:relative;border-right:none;border-bottom:1px solid rgba(255,255,255,0.08);} .sidebar ul{display:flex;flex-wrap:wrap;gap:5px 20px;} .sidebar ul li{padding:5px 0;} body{flex-direction:column;} .main-content{padding:20px;} }
+</style>
+</head>
+<body>
+<div class="sidebar">
+    <h2>Agora AI</h2>
+    <ul>
+        <li style="opacity: 1; color: #4eb1ff; transform: translateX(5px);"><a href="dash.html">🏠 Dashboard</a></li>
+       <li><a href="agora.html">🩺 Agora AI</a> </li>
+        <li><a href="my-medicine.html">💊 Medicines</a></li>
+        <li>📄 Prescriptions</li>
+        <li>📈 Health Charts</li>
+        <li>🎯 Trackers</li>
+        <li>📋 Health Report</li>
+        <li>🏆 Achievements</li>
+        <li>🚨 Emergency</li>
+    </ul>
+</div>  
+<div class="main-content">
+    <div class="header-top">
+        <h1>AI chatbot</h1>
+        <div class="ai-assistant-badge">🤖 Agora AI 🧑‍⚕️</div>
+    </div>
+    <div id="time-display" class="time-date"></div>
+    <div class="greeting">Welcome! You can now talk to your AI health assistant.</div>
+    <div class="content-grid">
+        <div class="card-insights">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3>🩺 Agora AI</h3>
+                    <p>Speak your health question and get instant advice.</p>
+                </div>
+            </div>
+            <div id="chat-history" class="chat-history">
+                <div class="message ai-message"><p>Hello! I'm Agora AI. Ask me anything about your health!</p></div>
+            </div>
+            <div id="loading-indicator" class="loading-indicator" style="display:none;">
+                <div class="loading-spinner"></div>
+                Thinking...
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="user-input" placeholder="Type or speak your question..." />
+                <button id="send-button"><span>💬</span> Send</button>
+                <button id="voice-button">🎤 Speak</button>
+            </div>
+        </div>
+        <div class="card-base card-metrics">
+            <div class="metric-title">🏃‍♀️ Health Metrics</div>
+            <p style="opacity:0.7;font-size:13px;">Your current body metrics.</p>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.agora.io/sdk/release/AgoraRTC_N.js"></script>
+<script>
+const API_KEY = "AIzaSyBsxf2BKFeXOHA6VSKcZ5A1iTsqjdV_AD0";
+const CHAT_MODEL = "gemini-2.5-flash-preview-09-2025";
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${CHAT_MODEL}:generateContent?key=${API_KEY}`;
+const chatHistory = document.getElementById('chat-history');
+const userInput = document.getElementById('user-input');
+const sendButton = document.getElementById('send-button');
+const voiceButton = document.getElementById('voice-button');
+const loadingIndicator = document.getElementById('loading-indicator');
+
+function updateTime(){ const now=new Date(); document.getElementById('time-display').textContent=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+setInterval(updateTime,1000); updateTime();
+
+function appendMessage(contentHtml,role){
+    const msg=document.createElement('div');
+    msg.className=`message ${role}-message`;
+    msg.innerHTML=contentHtml;
+    chatHistory.appendChild(msg);
+    chatHistory.scrollTop=chatHistory.scrollHeight;
+}
+function setLoading(show){
+    loadingIndicator.style.display=show?'flex':'none';
+    userInput.disabled=show; sendButton.disabled=show; voiceButton.disabled=show;
+    sendButton.innerHTML=show?'<div class="loading-spinner"></div> Wait':'<span>💬</span> Send';
+}
+function formatMessageContent(text,sources){
+    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');
+    if(sources && sources.length){
+        html+=`<div class="citation-section">Sources: ${sources.map((s,i)=>`<a href="${s.uri}" target="_blank" title="${s.title||'Source'}">[${i+1}]</a>`).join(' ')}</div>`;
+    }
+    return html;
+}
+
+async function sendMessage(userQuery){
+    if(!userQuery) return;
+    appendMessage(userQuery,'user'); userInput.value='';
+    const devQueryPatterns = [/who(?:'s| is)? your developer/i,/who made you/i,/creator/i,/developer/i];
+    const isDevQuestion = devQueryPatterns.some(p=>p.test(userQuery));
+    if(isDevQuestion){
+        const devAnswer = "I was created with ❤️ by AlgoRhythm ";
+        appendMessage(devAnswer,'ai');
+        speakText(devAnswer);
+        return;
+    }
+    setLoading(true);
+    try{
+        const resp=await sendMessageToGemini(userQuery);
+        if(resp){
+            const html=formatMessageContent(resp.text,resp.sources);
+            appendMessage(html,'ai');
+            speakText(resp.text);
+        } else appendMessage('<p>Sorry, I could not get a response.</p>','ai');
+    } catch(e){
+        console.error(e);
+        appendMessage('<p>Error connecting to Agora AI.</p>','ai');
+    } finally{ setLoading(false);}
+}
+
+sendButton.onclick=()=>sendMessage(userInput.value);
+
+async function sendMessageToGemini(query,retries=3){
+    const systemPrompt="You are Agora AI, a voice-enabled AI Health Assistant. Provide concise, grounded health advice.";
+    const payload={contents:[{parts:[{text:query}]}],systemInstruction:{parts:[{text:systemPrompt}]}}; 
+    for(let i=0;i<retries;i++){
+        try{
+            const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+            if(!res.ok) throw new Error(res.status);
+            const result=await res.json();
+            const candidate=result.candidates?.[0];
+            if(candidate && candidate.content?.parts?.[0]?.text){
+                const text=candidate.content.parts[0].text;
+                let sources=[];
+                if(candidate.groundingMetadata?.groundingAttributions){
+                    sources=candidate.groundingMetadata.groundingAttributions.map(a=>({uri:a.web?.uri,title:a.web?.title})).filter(s=>s.uri&&s.title);
+                }
+                return {text,sources};
+            }
+            throw new Error("No content");
+        } catch(e){
+            if(i<retries-1) await new Promise(r=>setTimeout(r,Math.pow(2,i)*1000));
+            else return null;
+        }
+    }
+}
+
+async function speakText(text){
+    const utter=new SpeechSynthesisUtterance(text);
+    utter.lang='en-US'; speechSynthesis.speak(utter);
+}
+
+voiceButton.onclick=()=>startVoiceInput();
+
+function startVoiceInput(){
+    if(!('webkitSpeechRecognition' in window)){
+        alert('Speech recognition not supported in this browser.');
+        return;
+    }
+    const recognition=new webkitSpeechRecognition();
+    recognition.lang='en-US';
+    recognition.interimResults=false;
+    recognition.maxAlternatives=1;
+    recognition.start();
+    recognition.onresult=(event)=>{
+        const speech=event.results[0][0].transcript;
+        sendMessage(speech);
+    };
+    recognition.onerror=(e)=>console.error(e);
+}
+</script>
+</body>
+</html>

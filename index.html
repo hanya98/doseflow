@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoseFlow - Medication Tracker</title>
+    
+    <!-- Load Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* CSS Variables (from your theme) */
+        :root {
+            --brand-dark: #1a1a2e;
+            --brand-primary: #4f239a;
+            --brand-light: #e0d6ff;
+            --brand-accent: #db3a99;
+            --brand-light-transparent: rgba(224, 214, 255, 0.7);
+            --brand-light-transparent-dark: rgba(224, 214, 255, 0.6);
+            --brand-primary-light: rgba(79, 35, 154, 0.05);
+            --brand-primary-medium: rgba(79, 35, 154, 0.1);
+            --brand-primary-border: rgba(79, 35, 154, 0.2);
+            --brand-accent-shadow: rgba(219, 58, 153, 0.2);
+            --brand-primary-hover: #6a0dad;
+        }
+
+        /* 1. Global Styles */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--brand-dark);
+            color: var(--brand-light);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Style the scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--brand-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-primary);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--brand-primary-hover);
+        }
+
+        /* 2. Typography */
+        h1 {
+            font-size: 2.25rem; /* 36px */
+            line-height: 2.5rem; /* 40px */
+            font-weight: 800;
+            color: #fff;
+            max-width: 42rem; /* 672px */
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 1.875rem; /* 30px */
+            line-height: 2.25rem; /* 36px */
+            font-weight: 700;
+            color: #fff;
+        }
+
+        h3 {
+            font-size: 1.25rem; /* 20px */
+            line-height: 1.75rem; /* 28px */
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        h4 {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        p, blockquote, cite, a {
+            font-size: 1rem; /* 16px */
+            line-height: 1.5rem; /* 24px */
+        }
+
+        p {
+            color: var(--brand-light-transparent);
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--brand-accent);
+            transition: color 0.2s;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* 3. Layout & Utility */
+        .container {
+            width: 100%;
+            max-width: 1280px; /* Equivalent to container */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+            box-sizing: border-box; /* Ensures padding is included in width */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* 4. Components */
+
+        /* ===== Navigation Bar ===== */
+        #main-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            width: 100%;
+            background-color: rgba(26, 26, 46, 0.8); /* brand-dark/80 */
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--brand-primary-border);
+        }
+
+        #main-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .logo .lucide-line-chart {
+            color: var(--brand-accent);
+        }
+        .logo span {
+            font-size: 1.5rem; /* 24px */
+            line-height: 2rem; /* 32px */
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .nav-links-desktop {
+            display: none; /* Hidden by default */
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-links-desktop a {
+            color: var(--brand-light-transparent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-links-desktop a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        /* Button Style */
+        .button {
+            background-color: var(--brand-accent);
+            color: #fff;
+            font-weight: 600;
+            padding: 0.625rem 1.25rem; /* 10px 20px */
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 6px -1px var(--brand-accent-shadow), 0 2px 4px -2px var(--brand-accent-shadow);
+        }
+        .button:hover {
+            background-color: rgba(219, 58, 153, 0.9);
+            text-decoration: none;
+        }
+
+        #menu-toggle {
+            display: block; /* Show by default on mobile */
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+        #menu-toggle .lucide {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        #mobile-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--brand-dark);
+            border-top: 1px solid var(--brand-primary-border);
+            padding: 1.5rem;
+        }
+        #mobile-menu .flex-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        #mobile-menu a {
+            color: var(--brand-light-transparent);
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+        #mobile-menu .button {
+            padding: 0.75rem 1.25rem;
+            text-align: center;
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            padding: 6rem 0;
+        }
+        .hero-glow {
+            position: absolute;
+            top: -25%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 56rem; /* 896px */
+            height: 24rem; /* 384px */
+            background-color: var(--brand-primary);
+            border-radius: 9999px;
+            opacity: 0.2;
+            filter: blur(64px);
+            z-index: -10;
+        }
+        .hero h1 {
+            max-width: 56rem; /* 896px */
+        }
+        .hero p {
+            font-size: 1.125rem; /* 18px */
+            line-height: 1.75rem; /* 28px */
+            color: var(--brand-light-transparent);
+            margin-top: 1.5rem;
+            max-width: 42rem; /* 672px */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero .button-container {
+            margin-top: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .hero .button {
+            padding: 0.75rem 2rem;
+            font-size: 1.125rem; /* 18px */
+        }
+        .hero .signinn.html-link {
+            margin-top: 1.5rem;
+            color: var(--brand-light-transparent-dark);
+        }
+        .hero .signinn.html-link a {
+            font-weight: 600;
+        }
+
+        /* ===== Key Features Section ===== */
+        #features {
+            padding: 5rem 0;
+            background-color: var(--brand-primary-light);
+        }
+        .features-header {
+            text-align: center;
+            max-width: 42rem;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 4rem;
+        }
+        .features-header h2 {
+            font-size: 1.875rem; /* 30px */
+            line-height: 2.25rem; /* 36px */
+        }
+        .features-header p {
+            font-size: 1.125rem; /* 18px */
+            line-height: 1.75rem; /* 28px */
+            margin-top: 1rem;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        .feature-card {
+            background-color: var(--brand-primary-medium);
+            padding: 2rem;
+            border-radius: 0.75rem; /* 12px */
+            border: 1px solid var(--brand-primary-border);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            border-color: rgba(79, 35, 154, 0.5);
+            box-shadow: 0 10px 15px -3px var(--brand-primary-medium), 0 4px 6px -4px var(--brand-primary-medium);
+        }
+        .feature-icon-container {
+            width: 3rem; /* 48px */
+            height: 3rem; /* 48px */
+            background-color: rgba(219, 58, 153, 0.2);
+            color: var(--brand-accent);
+            border-radius: 0.5rem; /* 8px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+        }
+        .feature-icon-container .lucide {
+            width: 1.5rem; /* 24px */
+            height: 1.5rem; /* 24px */
+        }
+        .feature-card p {
+            color: var(--brand-light-transparent);
+        }
+
+        /* ===== Testimonial Section ===== */
+        #testimonial {
+            padding: 5rem 0;
+        }
+        #testimonial .container {
+            max-width: 48rem; /* 768px */
+            margin: 0 auto;
+            text-align: center;
+        }
+        #testimonial .lucide-quote {
+            width: 3rem;
+            height: 3rem;
+            color: var(--brand-primary);
+            opacity: 0.5;
+            margin: 0 auto;
+        }
+        #testimonial blockquote {
+            font-size: 1.5rem; /* 24px */
+            line-height: 2rem; /* 32px */
+            font-weight: 300;
+            font-style: italic;
+            color: #fff;
+            margin-top: 1.5rem;
+        }
+        #testimonial footer {
+            margin-top: 2rem;
+        }
+        #testimonial cite {
+            font-size: 1.25rem; /* 20px */
+            line-height: 1.75rem; /* 28px */
+            font-weight: 600;
+            color: #fff;
+            font-style: normal;
+        }
+        #testimonial footer p {
+            color: var(--brand-light-transparent-dark);
+        }
+
+        /* ===== Final CTA Section ===== */
+        #signup {
+            padding: 5rem 0;
+            background-color: var(--brand-primary-light);
+            text-align: center;
+        }
+        .cta-box {
+            position: relative;
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+        .cta-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 18rem; /* 288px */
+            background-color: var(--brand-accent);
+            border-radius: 9999px;
+            opacity: 0.1;
+            filter: blur(64px);
+            z-index: -10;
+        }
+        #signup h2 {
+            font-size: 1.875rem; /* 30px */
+            line-height: 2.25rem; /* 36px */
+        }
+        #signup p {
+            font-size: 1.125rem; /* 18px */
+            line-height: 1.75rem; /* 28px */
+            margin-top: 1rem;
+            max-width: 36rem; /* 576px */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #signup .button {
+            padding: 0.75rem 2rem;
+            font-size: 1.125rem;
+            margin-top: 2rem;
+            display: inline-block;
+        }
+
+        /* ===== Sign In Placeholder ===== */
+        #signinn.html {
+            height: 24rem; /* 384px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #signinn.html h2 {
+            font-size: 1.5rem; /* 24px */
+            line-height: 2rem; /* 32px */
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            border-top: 1px solid var(--brand-primary-border);
+        }
+        footer .container {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        footer .logo {
+            margin-bottom: 1rem;
+        }
+        footer .copyright {
+            font-size: 0.875rem; /* 14px */
+            line-height: 1.25rem; /* 20px */
+            color: var(--brand-light-transparent-dark);
+        }
+        footer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        footer ul a {
+            color: var(--brand-light-transparent-dark);
+            text-decoration: none;
+        }
+        footer ul a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* 5. Responsive Media Queries */
+
+        /* Small screens (sm) */
+        @media (min-width: 640px) {
+            .hero .button-container {
+                flex-direction: row;
+            }
+        }
+        
+        /* Medium screens (md) */
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 3.75rem; /* 60px */
+                line-height: 1;
+            }
+            h2 {
+                font-size: 2.25rem; /* 36px */
+                line-height: 2.5rem; /* 40px */
+            }
+            .hero p {
+                font-size: 1.25rem; /* 20px */
+                line-height: 1.75rem; /* 28px */
+            }
+
+            #menu-toggle {
+                display: none;
+            }
+            .nav-links-desktop {
+                display: flex;
+            }
+            #mobile-menu {
+                display: none;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            #testimonial blockquote {
+                font-size: 1.875rem; /* 30px */
+                line-height: 2.25rem; /* 36px */
+            }
+            
+            #signup h2 {
+                font-size: 2.25rem; /* 36px */
+                line-height: 2.5rem; /* 40px */
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <!-- ===== Navigation Bar ===== -->
+    <nav id="main-nav">
+        <div class="container">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <i data-lucide="line-chart"></i>
+                <span>DoseFlow</span>
+            </a>
+            
+            <!-- Desktop Nav -->
+            <div class="nav-links-desktop">
+                <a href="signinn.html">Sign In</a>
+                <a href="signup.html" class="button">
+                    Get Started Free
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="menu-toggle">
+                <i id="menu-icon" data-lucide="menu"></i>
+                <i id="close-icon" data-lucide="x" class="hidden"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden">
+            <div class="flex-col">
+                <a href="signinn.html">Sign In</a>
+                <a href="signup.html" class="button">
+                    Get Started Free
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== Hero Section ===== -->
+    <header class="hero">
+        <div class="hero-glow"></div>
+        
+        <div class="container">
+            <h1>
+                Take Control of Your Health.
+            </h1>
+            <p>
+                The smart, simple way to track your medications and monitor your progress. DoseFlow is your personal health log, all in one easy-to-use app.
+            </p>
+            <div class="button-container">
+                <a href="signup.html" class="button">
+                    Get Started for Free
+                </a>
+            </div>
+            <p class="signinn.html-link">
+                Already have an account? <a href="signinn.html">Sign In</a>
+            </p>
+        </div>
+    </header>
+
+    <!-- ===== Key Features Section ===== -->
+    <section id="features">
+        <div class="container">
+            <div class="features-header">
+                <h2>
+                    Your Health, Effortlessly Managed
+                </h2>
+                <p>
+                    From smart reminders to progress reports, we've got you covered.
+                </p>
+            </div>
+            
+            <div class="feature-grid">
+                <!-- Feature 1: Adherence Tracking -->
+                <div class="feature-card">
+                    <div class="feature-icon-container">
+                        <i data-lucide="target"></i>
+                    </div>
+                    <h3>Adherence Tracking</h3>
+                    <p>
+                        Log your doses with a single tap and monitor your progress. Create shareable reports for your doctor to see your history.
+                    </p>
+                </div>
+                
+                <!-- Feature 2: Smart Reminders -->
+                <div class="feature-card">
+                    <div class="feature-icon-container">
+                        <i data-lucide="bell-ring"></i>
+                    </div>
+                    <h3>Smart Reminders</h3>
+                    <p>
+                        Get intelligent, timely reminders for every dose. Snooze, skip, or confirm when it's convenient for you.
+                    </p>
+                </div>
+                
+                <!-- Feature 3: All-in-One Dashboard -->
+                <div class="feature-card">
+                    <div class="feature-icon-container">
+                        <i data-lucide="layout-dashboard"></i>
+                    </div>
+                    <h3>All-in-One Dashboard</h3>
+                    <p>
+                        See all your medications, schedules, and tracking history in one clean, easy-to-read place.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ===== Testimonial Section ===== -->
+    <section id="testimonial">
+        <div class="container">
+            <div>
+                <i data-lucide="quote"></i>
+                <blockquote>
+                    "DoseFlow has been a lifesaver. I'm finally managing my medications without stress. Seeing my adherence history in the tracker makes me feel so much more in control of my health."
+                </blockquote>
+                <footer>
+                    <cite>– Sarah K.</cite>
+                    <p>DoseFlow User</p>
+                </footer>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Final CTA Section ===== -->
+    <section id="signup">
+        <div class="container">
+            <div class="cta-box">
+                <div class="cta-glow"></div>
+                <h2>
+                    Start Tracking Your Progress Today.
+                </h2>
+                <p>
+                    Join thousands of users who trust DoseFlow to manage their well-being.
+                    signinn.htmlg up is free and takes less than a minute.
+                </p>
+                
+                  <a href="signup.html" class="button">Sign Up Now</a>  
+                
+            </div>
+        </div>
+    </section>
+    
+    <!-- This section is just a placeholder to demonstrate the Sign In link -->
+    <section id="signinn.html"></section>
+
+    <!-- ===== Footer ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Logo & Copyright -->
+                <div>
+                    <a href="#" class="logo">
+                        <i data-lucide="line-chart"></i>
+                        <span>DoseFlow</span>
+                    </a>
+                    <p class="copyright">
+                        &copy; 2025 DoseFlow. All rights reserved.
+                    </p>
+                </div>
+                
+                <!-- Product Links -->
+                <div>
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Pricing</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Company Links -->
+                <div>
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal Links -->
+                <div>
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- JavaScript for Mobile Menu and Icons -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+</html>

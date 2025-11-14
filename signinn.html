@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - DoseFlow</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* CSS Variables (from your theme) */
+        :root {
+            --brand-dark: #1a1a2e;
+            --brand-primary: #4f239a;
+            --brand-light: #e0d6ff;
+            --brand-accent: #db3a99;
+            --brand-light-transparent: rgba(224, 214, 255, 0.7);
+            --brand-light-transparent-dark: rgba(224, 214, 255, 0.6);
+            --brand-primary-light: rgba(79, 35, 154, 0.05);
+            --brand-primary-medium: rgba(79, 35, 154, 0.1);
+            --brand-primary-border: rgba(79, 35, 154, 0.2);
+            --brand-accent-shadow: rgba(219, 58, 153, 0.2);
+            --brand-primary-hover: #6a0dad;
+
+            /* Additional interactive colors */
+            --gradient-start: #3a0d6a; /* Darker purple */
+            --gradient-end: #1a1a2e; /* Brand dark */
+        }
+
+        /* 1. Global Styles */
+        html {
+            height: 100%;
+        }
+        body {
+            /* MODIFIED: New animated background */
+            background: linear-gradient(135deg, 
+                var(--gradient-start), 
+                var(--brand-primary), 
+                var(--brand-dark),
+                var(--brand-accent)
+            );
+            background-size: 400% 400%; /* Make background larger for animation */
+            animation: animateBackground 20s infinite alternate ease-in-out; /* Apply animation */
+
+            color: var(--brand-light);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll due to bg animation */
+            position: relative; /* For background animation */
+        }
+
+        @keyframes animateBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--brand-accent);
+            transition: color 0.2s;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* 2. Layout */
+        .container {
+            width: 100%;
+            max-width: 1280px; /* Equivalent to container */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+            box-sizing: border-box; /* Ensures padding is included in width */
+        }
+        
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            align-items: center; /* Vertically center */
+            justify-content: center; /* Horizontally center */
+            padding: 2rem 0;
+            position: relative; /* To contain any glow effects */
+        }
+
+        /* 3. Components */
+
+        /* ===== Header ===== */
+        .header {
+            padding: 1rem 0;
+            z-index: 10; /* Ensure header is above background elements */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .logo .lucide-line-chart {
+            color: var(--brand-accent);
+        }
+        .logo span {
+            font-size: 1.5rem; /* 24px */
+            line-height: 2rem; /* 32px */
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        /* ===== Form Card ===== */
+        .form-card {
+            background-color: var(--brand-dark); /* Darker background for more contrast */
+            border: 1px solid var(--brand-primary); /* More prominent border */
+            border-radius: 1rem; /* Slightly more rounded */
+            padding: 2.5rem; /* More generous padding */
+            width: 100%;
+            max-width: 440px; /* Slightly wider */
+            box-sizing: border-box;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.3); /* Stronger shadow */
+            position: relative;
+            overflow: hidden; /* For inner glow */
+        }
+        
+        /* Inner glow effect for the card */
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            right: -50px;
+            bottom: -50px;
+            background: radial-gradient(circle at center, var(--brand-primary) 0%, transparent 20%);
+            opacity: 0.1;
+            filter: blur(40px);
+            z-index: -1;
+            animation: pulseGlow 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.05); opacity: 0.15; }
+            100% { transform: scale(1); opacity: 0.1; }
+        }
+
+        @media (min-width: 640px) {
+            .form-card {
+                padding: 3rem;
+            }
+        }
+        
+        .form-card h1 {
+            font-size: 2.25rem; /* 36px */
+            line-height: 2.5rem; /* 40px */
+            font-weight: 800;
+            color: #fff;
+            text-align: center;
+            margin: 0 0 2rem 0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem; /* More space between fields */
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--brand-light);
+            margin-bottom: 0.75rem; /* More space below label */
+            font-size: 1.05rem; /* Slightly larger label */
+        }
+        
+        .form-input {
+            display: block;
+            width: 100%;
+            box-sizing: border-box; /* Important for padding */
+            padding: 0.9rem 1.2rem; /* More padding */
+            border-radius: 0.6rem; /* Slightly more rounded */
+            border: 1px solid var(--brand-primary-border);
+            background-color: var(--brand-dark); /* Keep dark background */
+            color: #fff;
+            font-size: 1.05rem; /* Slightly larger text */
+            transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--brand-accent);
+            box-shadow: 0 0 0 4px rgba(219, 58, 153, 0.4); /* Stronger, glowing shadow */
+            background-color: rgba(26, 26, 46, 0.7); /* Slightly lighter on focus */
+        }
+        
+        .form-button {
+            width: 100%;
+            background-color: var(--brand-accent);
+            color: #fff;
+            font-weight: 700; /* Bolder text */
+            padding: 1rem 1.5rem; /* More padding */
+            border-radius: 0.6rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 15px rgba(219, 58, 153, 0.3), 0 3px 6px rgba(219, 58, 153, 0.2); /* Deeper shadow */
+            border: none;
+            font-size: 1.15rem; /* Larger text */
+            cursor: pointer;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .form-button:hover {
+            background-color: rgba(219, 58, 153, 0.95);
+            transform: translateY(-2px); /* Lift effect */
+            box-shadow: 0 12px 20px rgba(219, 58, 153, 0.4), 0 5px 10px rgba(219, 58, 153, 0.3);
+        }
+        .form-button:active {
+            transform: translateY(0); /* Press effect */
+            box-shadow: 0 4px 8px rgba(219, 58, 153, 0.3);
+        }
+
+        /* Sparkle effect on button hover */
+        .form-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.4s ease-out;
+        }
+        .form-button:hover::after {
+            width: 200%;
+            height: 200%;
+            opacity: 1;
+        }
+        
+        .form-footer-link {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--brand-light-transparent);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .form-card {
+                padding: 1.5rem;
+            }
+            .form-card h1 {
+                font-size: 1.75rem;
+                margin-bottom: 1.5rem;
+            }
+            .form-label {
+                font-size: 1rem;
+                margin-bottom: 0.4rem;
+            }
+            .form-input {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.95rem;
+            }
+            .form-button {
+                padding: 0.8rem 1rem;
+                font-size: 1rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i data-lucide="line-chart"></i>
+                <span>DoseFlow</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="form-card">
+                <h1>Sign In to DoseFlow</h1>
+                
+                <form action="dash.html" method="POST">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <button type="submit" class="form-button">Sign In</button>
+                </form>
+                
+                <p class="form-footer-link">
+                    Don't have an account? <a href="signup.html">Sign Up</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>

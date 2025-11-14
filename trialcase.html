@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DoseFlow Dashboard</title>
+
+<style>
+
+body {
+    margin: 0;
+  
+    background: #0a0f2f;
+   
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    font-weight: bold;
+    transition: background 0.5s, color 0.5s; 
+}
+
+.sidebar {
+    width: 210px;
+    
+    background: #090c23;
+    height: 100vh;
+    padding: 25px;
+    box-sizing: border-box;
+    
+    border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar h2 {
+    margin-top: 0;
+  
+    color: #4eb1ff;
+    font-weight: 900;
+    font-size: 22px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 25px;
+}
+
+.sidebar ul li {
+    padding: 10px 0;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: 0.2s;
+}
+
+.sidebar ul li:hover {
+    opacity: 1;
+    
+    color: #4eb1ff;
+    transform: translateX(5px);
+}
+
+.main {
+    flex: 1;
+    padding: 25px 35px;
+}
+
+.header {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+#time {
+    
+    color: #4eb1ff;
+    font-weight: 900;
+}
+
+.greet {
+    margin-top: 5px;
+    opacity: 0.9;
+    font-size: 15px;
+}
+
+.cards {
+    margin-top: 25px;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.card {
+    
+    background: rgba(255,255,255,0.06);
+    padding: 16px;
+    border-radius: 10px;
+    width: 280px;
+    backdrop-filter: blur(8px);
+   
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    transition: 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    
+    background: rgba(255,255,255,0.09);
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.btn {
+
+    background: #4eb1ff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 7px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 800;
+    margin-top: 8px;
+    transition: 0.2s;
+}
+.btn:hover {
+   
+    background: #2f99e4;
+}
+
+.metric-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    
+    border: 6px solid #4eb1ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 12px auto;
+    font-size: 22px;
+    font-weight: 900;
+  
+    color: #4eb1ff;
+}
+
+.full-width {
+    width: 100% !important;
+}
+
+.appointment-box {
+    
+    border: 1px dashed #4eb1ff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 12px;
+    text-align: center;
+    opacity: 0.85;
+}
+
+
+.light-mode {
+    
+    background: #f0f4f8;
+    
+    color: #1a1a1a;
+}
+
+.light-mode .sidebar {
+    
+    background: #fff;
+   
+    border-right: 1px solid rgba(0,0,0,0.1);
+}
+
+.light-mode .sidebar h2,
+.light-mode .sidebar ul li:hover,
+.light-mode #time,
+.light-mode .metric-circle,
+.light-mode .metric-circle,
+.light-mode .appointment-box {
+    
+    color: #4eb1ff;
+    border-color: #4eb1ff;
+}
+
+.light-mode .greet {
+    opacity: 0.75;
+}
+
+.light-mode .card {
+ 
+    background: #fff;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.light-mode .card:hover {
+   
+    background: #f7f7f7;
+}
+
+
+.light-mode #mode-toggle {
+    color: #4eb1ff;
+    background: transparent;
+    border: 1px solid #4eb1ff;
+}
+.light-mode #mode-toggle:hover {
+    background: #4eb1ff;
+    color: #fff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>DoseFlow</h2>
+    <ul>
+        <li>Dashboard</li>
+        <li>My Medicines</li>
+        <li>Prescriptions</li>
+        
+        <li>Health Charts</li>
+        <li>Trackers</li>
+        <li>Health Report</li>
+        <li>Achievements</li>
+        <li>Emergency</li>
+        
+        <li style="margin-top: 20px;">
+             <button class="btn full-width" id="mode-toggle">Toggle Mode</button>
+        </li>
+    </ul>
+</div>
+
+<div class="main">
+    <div class="header">
+        <span id="date"></span>
+        <span id="time"></span>
+    </div>
+    <div class="greet">Welcome back,here’s your health summary.</div>
+
+    <div class="cards">
+        <div class="card">
+            <h3>AI Health Assistant</h3>
+            <p style="font-size:13px; opacity:0.8;">Your personal AI-powered guide.</p>
+            <button class="btn">Generate Insights</button>
+        </div>
+
+        <div class="card">
+            <h3>Health Metrics</h3>
+            <div class="metric-circle">22.1</div>
+            <div style="text-align:center; font-size:13px;">
+                BMI — <span style="color:#53ff53;">Normal</span>
+            </div>
+            <p style="font-size:13px;">Weight: <b>70 kg</b></p>
+            <p style="font-size:13px;">Height: <b>178 cm</b></p>
+        </div>
+
+        <div class="card full-width">
+            <h3>Upcoming Appointments</h3>
+            <div class="appointment-box">
+                No appointments scheduled
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateTime() {
+    const now = new Date();
+
+    document.getElementById("date").textContent =
+        now.toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric"
+        }) + ", ";
+
+    document.getElementById("time").textContent =
+        now.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        });
+}
+
+setInterval(updateTime, 1000);
+updateTime();
+
+
+document.getElementById('mode-toggle').addEventListener('click', function() {
+    const body = document.body;
+    
+    body.classList.toggle('light-mode');
+});
+</script>
+
+</body>
+</html>
+
+
+
