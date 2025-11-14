@@ -15,7 +15,22 @@
             min-height: 100vh;
             display: flex; 
         }
+a:link {
+  color: rgb(223, 223, 227);
+}
 
+a:visited {
+  color: #f0e9f0;
+
+  text-decoration: none;
+}
+a:hover {
+  color: rgb(243, 243, 243);
+}
+
+a:active {
+  color: rgb(235, 229, 229);
+}
        
         .icon {
             margin-right: 8px;
@@ -89,8 +104,7 @@
             align-items: center;
             gap: 5px;
         }
-        
-  
+
         .time-date {
             font-size: 36px;
             font-weight: 800;
@@ -104,14 +118,12 @@
             margin-bottom: 25px;
         }
 
-      
         .content-grid {
             display: grid;
             grid-template-columns: 2fr 1fr; 
             gap: 30px;
         }
 
-       
         .card-insights {
             background: #090c23; 
             padding: 25px;
@@ -191,7 +203,6 @@
             color: #53ff53;
         }
 
-    
         .card-metrics {
             background: #090c23;
             padding: 25px;
@@ -210,7 +221,6 @@
             margin-bottom: 10px;
         }
 
-       
         .bmi-circle {
             width: 150px;
             height: 150px;
@@ -304,7 +314,7 @@
     <div class="header-top">
         <h1>Dashboard</h1>
         <div class="ai-assistant-badge" >
-            <span class="icon">🤖</span> AI Health Assistant <span class="icon">🧑‍⚕️</span>
+            <span class="icon">🤖</span><a href="agora.html"> AI Health Assistant</a> <span class="icon">🧑‍⚕️</span>
         </div>
     </div>
 
@@ -320,24 +330,24 @@
                     <p>Your personal AI-powered health guide.</p>
                 </div>
                 <button class="btn-insights">
-                    <span class="icon">✨</span> Generate Insights
+                    <span class="icon">✨</span><a href="agora.html">Discuss your Health</a> 
                 </button>
             </div>
             
             <div class="insights-section">
-                <div class="section-title"><span class="icon">💡</span> Personalized Insights For You</div>
+                <div class="section-title"><span class="icon">💡</span>Got any questions in mind?</div>
                 <ul class="insights-list">
                     <li>
                         <span class="bullet-icon">⚡</span>
-                        Improving your medication **adherence to over 50%** can significantly help manage your health conditions effectively. Setting daily reminders might be a helpful strategy.
+                         What does a BMI of 22.1 mean for my health?
                     </li>
                     <li>
                         <span class="bullet-icon">⚡</span>
-                        Your blood pressure reading of **128/94 mmHg** suggests it's important to monitor it closely. Discussing this with your healthcare provider can help ensure proper management.
+                        How can I lower my blood pressure?
                     </li>
                     <li>
                         <span class="bullet-icon">⚡</span>
-                        Since you currently have **no upcoming appointments**, consider scheduling one soon to review your blood pressure and medication plan.
+                        What is the best time to take my blood pressure medicine?
                     </li>
                 </ul>
             </div>
@@ -347,15 +357,15 @@
                 <ul class="insights-list tips">
                     <li>
                         <span class="bullet-icon">🟢</span>
-                        Aim for at least **30 minutes of moderate-intensity physical activity** most days of the week to support your heart health.
+                        Aim for at least 30 minutes of moderate-intensity physical activity most days of the week to support your heart health.
                     </li>
                     <li>
                         <span class="bullet-icon">🟢</span>
-                        Incorporate a variety of **fruits, vegetables, and whole grains** into your diet, and try to limit processed foods and excessive sodium intake.
+                        Incorporate a variety of fruits, vegetables, and whole grains into your diet, and try to limit processed foods and excessive sodium intake.
                     </li>
                     <li>
                         <span class="bullet-icon">🟢</span>
-                        Prioritize getting **7-9 hours of quality sleep** each night to support overall well-being and energy levels.
+                        Prioritize getting 7-9 hours of quality sleep each night to support overall well-being and energy levels.
                     </li>
                 </ul>
             </div>
@@ -406,7 +416,6 @@
             `${datePart} ${timePart}`;
     }
 
-    
     setInterval(updateTime, 1000);
     updateTime();
 </script>
