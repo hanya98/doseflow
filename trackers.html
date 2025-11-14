@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DoseFlow</title>
+    <title>DoseFlow | Trackers</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         
@@ -16,22 +16,22 @@
             display: flex; 
         }
 a:link {
-  color: rgb(223, 223, 227);
+    color: rgb(223, 223, 227);
 }
 
 a:visited {
-  color: #f0e9f0;
+    color: #f0e9f0;
 
-  text-decoration: none;
+    text-decoration: none;
 }
 a:hover {
-  color: rgb(243, 243, 243);
+    color: rgb(243, 243, 243);
 }
 
 a:active {
-  color: rgb(235, 229, 229);
+    color: rgb(235, 229, 229);
 }
-       
+        
         .icon {
             margin-right: 8px;
             font-size: 1.2em;
@@ -75,7 +75,7 @@ a:active {
             transform: translateX(5px);
         }
 
-       
+        
         .main-content {
             flex: 1;
             padding: 30px;
@@ -120,11 +120,11 @@ a:active {
 
         .content-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr; 
+            grid-template-columns: 1fr 1fr; 
             gap: 30px;
         }
 
-        .card-insights {
+        .card-tracker {
             background: #090c23; 
             padding: 25px;
             border-radius: 15px;
@@ -133,6 +133,7 @@ a:active {
             display: flex;
             flex-direction: column;
             gap: 25px;
+            align-items: center;
         }
 
         .card-header {
@@ -141,6 +142,7 @@ a:active {
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 15px;
+            width: 100%;
         }
 
         .card-header-left h3 {
@@ -155,73 +157,61 @@ a:active {
             opacity: 0.7;
         }
 
-        .btn-insights {
-            background: #4eb1ff;
+        .tracker-actions {
+            display: flex;
+            gap: 10px;
+            width: 90%;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-tracker {
+            background: #53ff53;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border-radius: 7px;
             cursor: pointer;
-            color: #fff;
+            color: #090c23;
+            font-weight: 800;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+            box-shadow: 0 4px 10px rgba(83, 255, 83, 0.3);
+            flex-grow: 1;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .btn-tracker:hover {
+            background: #3ee63e;
+        }
+
+        .btn-restart {
+            background: #ff5353;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 7px;
+            cursor: pointer;
+            color: #fff; 
             font-weight: 700;
             font-size: 14px;
             display: flex;
             align-items: center;
             gap: 5px;
             transition: background 0.2s;
+            box-shadow: 0 4px 10px rgba(255, 83, 83, 0.3);
+            flex-grow: 1;
+            min-width: 120px;
+            justify-content: center;
+        }
+        .btn-restart:hover {
+            background: #d84545;
         }
 
-        .btn-insights:hover {
-            background: #2f99e4;
-        }
 
-        .section-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #4eb1ff;
-        }
-        .insights-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .insights-list li {
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: flex-start;
-        }
-        .insights-list li .bullet-icon {
-            color: #ffcc00; 
-            margin-right: 10px;
-            font-size: 18px;
-            line-height: 1;
-        }
-        .insights-list.tips li .bullet-icon {
-            color: #53ff53;
-        }
-
-        .card-metrics {
-            background: #090c23;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .metric-title {
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-
-        .bmi-circle {
+        .tracker-circle {
             width: 150px;
             height: 150px;
             border-radius: 50%;
@@ -230,12 +220,11 @@ a:active {
             justify-content: center;
             align-items: center;
             margin: 20px auto;
-            
-            background: conic-gradient(#4eb1ff 70%, #0c1843 0%); 
+            background: conic-gradient(#4eb1ff 0%, #0c1843 0%);
             border: 12px solid #0c1843; 
         }
 
-        .bmi-value {
+        .circle-value {
             font-size: 32px;
             font-weight: 900;
             background: #090c23; 
@@ -247,18 +236,11 @@ a:active {
             align-items: center;
             flex-direction: column;
         }
-        .bmi-label {
+        .circle-label {
             font-size: 12px;
             font-weight: 600;
             opacity: 0.8;
             margin-top: -10px;
-        }
-
-        .bmi-status {
-            font-size: 16px;
-            font-weight: 700;
-            color: #53ff53; 
-            margin-bottom: 30px;
         }
 
         .metrics-details {
@@ -283,10 +265,14 @@ a:active {
             opacity: 0.8;
         }
         
-        .smiley-face {
-            font-size: 24px;
-            margin-top: 20px;
-            cursor: pointer;
+        .water-value {
+            color: #4eb1ff;
+        }
+        .sleep-circle {
+            background: conic-gradient(#ffcc00 85%, #0c1843 0%);
+        }
+        .sleep-value {
+            color: #ffcc00;
         }
     </style>
 </head>
@@ -302,110 +288,153 @@ a:active {
         <li><span class="icon">📄</span> Prescriptions</li>
 
         <li><span class="icon">📈</span> Health Charts</li>
-        <li><span class="icon">🎯</span><a href="trackers.html">Trackers</a></li>
+        <li><span class="icon">🎯</span> <a href="trackers.html">Trackers</a></li>
         <li><span class="icon">📋</span> Health Report</li>
         <li><span class="icon">🏆</span> Achievements</li>
         <li><span class="icon">🚨</span> Emergency</li>
     </ul>
-</div>  
+</div> 	
 
 <div class="main-content">
 
     <div class="header-top">
-        <h1>Dashboard</h1>
+        <h1>Trackers</h1>
         <div class="ai-assistant-badge" >
             <span class="icon">🤖</span><a href="agora.html"> AI Health Assistant</a> <span class="icon">🧑‍⚕️</span>
         </div>
     </div>
 
     <div id="time-display" class="time-date"></div>
-    <div class="greeting">Welcome Back!! Here's your unified health summary.</div>
+    <div class="greeting">Monitor and log your daily wellness goals.</div>
 
     <div class="content-grid">
-
-        <div class="card-insights">
+        
+        <div class="card-tracker">
             <div class="card-header">
                 <div class="card-header-left">
-                    <h3><span class="icon">🩺</span> AI Health Assistant</h3>
-                    <p>Your personal AI-powered health guide.</p>
+                    <h3><span class="icon">💧</span> Water Intake</h3>
+                    <p>Tracked: Today, Nov 14</p>
                 </div>
-                <a class="btn-insights" href="agora.html">
-                    <span class="icon">✨</span>Discuss your Health
-                </a>
+            </div>
+
+            <div class="tracker-circle" id="water-tracker-circle">
+                <div class="circle-value water-value">
+                    <span id="current-water-intake">0L</span>
+                    <div class="circle-label">Target <span id="water-target">2.5L</span></div>
+                </div>
+            </div>
+
+            <div class="metrics-details" style="margin-bottom: 20px;">
+                <div class="metric-item">
+                    <b id="goal-reached-percentage">0%</b>
+                    <span>Goal Reached</span>
+                </div>
+                <div class="metric-item">
+                    <b id="glasses-remaining">10</b>
+                    <span>Glasses Remaining</span>
+                </div>
             </div>
             
-            <div class="insights-section">
-                <div class="section-title"><span class="icon">💡</span>Got any questions in mind?</div>
-                <ul class="insights-list">
-                    <li>
-                        <span class="bullet-icon">⚡</span>
-                         What does a BMI of 22.1 mean for my health?
-                    </li>
-                    <li>
-                        <span class="bullet-icon">⚡</span>
-                        How can I lower my blood pressure?
-                    </li>
-                    <li>
-                        <span class="bullet-icon">⚡</span>
-                        What is the best time to take my blood pressure medicine?
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="insights-section">
-                <div class="section-title"><span class="icon">🌱</span> General Wellness Tips</div>
-                <ul class="insights-list tips">
-                    <li>
-                        <span class="bullet-icon">🟢</span>
-                        Aim for at least 30 minutes of moderate-intensity physical activity most days of the week to support your heart health.
-                    </li>
-                    <li>
-                        <span class="bullet-icon">🟢</span>
-                        Incorporate a variety of fruits, vegetables, and whole grains into your diet, and try to limit processed foods and excessive sodium intake.
-                    </li>
-                    <li>
-                        <span class="bullet-icon">🟢</span>
-                        Prioritize getting 7-9 hours of quality sleep each night to support overall well-being and energy levels.
-                    </li>
-                </ul>
+            <div class="tracker-actions">
+                <button class="btn-tracker" onclick="logWaterIntake()">
+                    <span class="icon">➕</span> Log 1 Glass
+                </button>
+                
+                <button class="btn-restart" onclick="resetWaterTracker()">
+                    <span class="icon">🔄</span> Restart Day
+                </button>
             </div>
         </div>
 
-        <div class="card-metrics">
-            <div class="metric-title">
-                <span class="icon">🏃‍♀️</span> Health Metrics
-            </div>
-            <p style="font-size: 13px; opacity: 0.7;">Your current body metrics.</p>
-
-            <div class="bmi-circle">
-                <div class="bmi-value">
-                    22.1
-                    <div class="bmi-label">BMI</div>
+        <div class="card-tracker">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3><span class="icon">🌙</span> Sleep Tracker</h3>
+                    <p>Last Night: Nov 13 - Nov 14</p>
                 </div>
             </div>
 
-            <div class="bmi-status">Normal</div>
+            <div class="tracker-circle sleep-circle">
+                <div class="circle-value sleep-value">
+                    6h 52m
+                    <div class="circle-label">Target 8h</div>
+                </div>
+            </div>
 
-            <div class="metrics-details">
+            <div class="metrics-details" style="margin-bottom: 20px;">
                 <div class="metric-item">
-                    <b>70</b>
-                    <span>Weight (kg)</span>
+                    <b>85%</b>
+                    <span>Time Achieved</span>
                 </div>
                 <div class="metric-item">
-                    <b>178</b>
-                    <span>Height (cm)</span>
+                    <b>18m</b>
+                    <span>Deep Sleep</span>
                 </div>
             </div>
             
-            <div class="smiley-face">
-                &#128578;
-            </div>
+            <button class="btn-tracker" style="width: 80%;">
+                <span class="icon">✏️</span> Review Sleep Data
+            </button>
+        </div>
+
+        <div style="grid-column: 1 / -1; margin-top: 30px; opacity: 0.7;">
+            <p>More trackers coming soon: Exercise, Medication Adherence, and Stress Level.</p>
         </div>
 
     </div>
 </div>
 
 <script>
+    const GLASS_VOLUME_L = 0.25;
+    const DAILY_TARGET_L = 2.5;
+    const TOTAL_GLASSES = DAILY_TARGET_L / GLASS_VOLUME_L;
+
+    let currentLiters = 0;
+    let currentGlasses = 0;
+
+    const litersEl = document.getElementById('current-water-intake');
+    const glassesRemainingEl = document.getElementById('glasses-remaining');
+    const percentageEl = document.getElementById('goal-reached-percentage');
+    const circleEl = document.getElementById('water-tracker-circle');
+    const glassesRemainingLabelEl = glassesRemainingEl.parentElement.querySelector('span');
+
+    function updateWaterMetrics() {
+        const percentage = Math.min((currentLiters / DAILY_TARGET_L) * 100, 100);
+        const remainingGlasses = Math.max(TOTAL_GLASSES - currentGlasses, 0);
+
+        litersEl.textContent = `${currentLiters.toFixed(1)}L`;
+        percentageEl.textContent = `${Math.round(percentage)}%`;
+        glassesRemainingEl.textContent = remainingGlasses.toFixed(0);
+
+        circleEl.style.background = `conic-gradient(#4eb1ff ${percentage}%, #0c1843 0%)`;
+
+        if (remainingGlasses === 0) {
+             glassesRemainingLabelEl.textContent = 'Goal Met';
+        } else {
+             glassesRemainingLabelEl.textContent = 'Glasses Remaining';
+        }
+    }
+
+    function logWaterIntake() {
+        if (currentLiters < DAILY_TARGET_L) {
+            currentLiters += GLASS_VOLUME_L;
+            currentGlasses += 1;
+            updateWaterMetrics();
+        } else {
+            alert("Goal already met! Click 'Restart Day' to begin a new tracking cycle.");
+        }
+    }
+    
+    function resetWaterTracker() {
+        if (confirm("Are you sure you want to restart the water tracker for the day? All current intake will be reset to 0.")) {
+            currentLiters = 0;
+            currentGlasses = 0;
+            updateWaterMetrics();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', updateWaterMetrics);
+
     function updateTime() {
         const now = new Date();
         

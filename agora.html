@@ -20,6 +20,10 @@
         a:active {
             color: rgb(235, 229, 229);
         }
+        .icon {
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
         .sidebar { width:210px; background:#090c23; padding:25px; border-right:1px solid rgba(255,255,255,0.08); height:100vh; position:sticky; top:0; }
         .sidebar h2 { color:#4eb1ff; font-weight:900; font-size:22px; }
         .sidebar ul { list-style:none; padding:0; margin-top:25px; }
@@ -31,7 +35,13 @@
         .ai-assistant-badge { background:#4eb1ff; padding:8px 15px; border-radius:20px; font-size:14px; font-weight:700; display:flex; align-items:center; gap:5px; }
         .time-date { font-size:36px; font-weight:800; color:#4eb1ff; margin-bottom:5px; }
         .greeting { font-size:16px; font-weight:500; opacity:0.8; margin-bottom:25px; }
-        .content-grid { display:grid; grid-template-columns:2fr 1fr; gap:30px; }
+        
+        .content-grid { 
+            display:grid; 
+            grid-template-columns:1fr;
+            gap:30px; 
+        }
+        
         .card-base { background:#090c23; padding:25px; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; }
         .card-insights { display:flex; flex-direction:column; gap:25px; min-height:500px; max-height:600px; }
         .card-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px; }
@@ -56,33 +66,33 @@
         .citation-section { margin-top:10px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.05); font-size:11px; opacity:0.7; }
         .citation-section a { color:#79d0ff; text-decoration:none; }
         .citation-section a:hover { text-decoration:underline; }
-        @media (max-width:1024px){ .content-grid{grid-template-columns:1fr;} .sidebar{width:100%;height:auto;position:relative;border-right:none;border-bottom:1px solid rgba(255,255,255,0.08);} .sidebar ul{display:flex;flex-wrap;gap:5px 20px;} .sidebar ul li{padding:5px 0;} body{flex-direction:column;} .main-content{padding:20px;} }
+        @media (max-width:1024px){ .content-grid{grid-template-columns:1fr;} .sidebar{width:100%;height:auto;position:relative;border-right:none;border-bottom:1px solid rgba(255,255,255,0.08);} .sidebar ul{display:flex;flex-wrap:wrap;gap:5px 20px;} .sidebar ul li{padding:5px 0;} body{flex-direction:column;} .main-content{padding:20px;} }
     </style>
 </head>
 <body>
 <div class="sidebar">
     <h2>DoseFlow</h2>
     <ul>
-        <li style="opacity: 1; color: #4eb1ff; transform: translateX(5px);"><a href="dash.html">🏠 Dashboard</a></li>
-        <li><a href="agora.html">🩺 Agora AI</a> </li>
-        <li><a href="my-medicine.html">💊 Medicines</a></li>
-        <li><a href="">📄 Prescriptions</a></li>
-        <li><a href="">📈 Health Charts</a></li>
-        <li><a href="">🎯 Trackers</a></li>
-        <li><a href="">📋 Health Report</a></li>
-        <li><a href="">🏆 Achievements</a></li>
-        <li><a href="">🚨 Emergency</a></li>
+        <li><span class="icon">🏠</span> <a href="dash.html">Dashboard</a></li>
+        <li style="opacity: 1; color: #4eb1ff; transform: translateX(5px);"><span class="icon">🩺</span> <a href="agora.html">Agora AI</a></li>
+        <li><span class="icon">💊</span> <a href="my-medicine.html">Medicines</a></li>
+        <li><span class="icon">📄</span> <a href="">Prescriptions</a></li>
+        <li><span class="icon">📈</span> <a href="">Health Charts</a></li>
+        <li><span class="icon">🎯</span> <a href="">Trackers</a></li>
+        <li><span class="icon">📋</span> <a href="">Health Report</a></li>
+        <li><span class="icon">🏆</span> <a href="">Achievements</a></li>
+        <li><span class="icon">🚨</span> <a href="">Emergency</a></li>
     </ul>
 </div>
 <div class="main-content">
     <div class="header-top">
-        <h1>AI chatbot</h1>
+        <h1>AI Chatbot</h1>
         <div class="ai-assistant-badge">🤖 Agora AI 🧑‍⚕️</div>
     </div>
     <div id="time-display" class="time-date"></div>
     <div class="greeting">Welcome! You can now talk to your AI health assistant.</div>
     <div class="content-grid">
-        <div class="card-insights">
+        <div class="card-base card-insights">
             <div class="card-header">
                 <div class="card-header-left">
                     <h3>🩺 Agora AI</h3>
@@ -102,11 +112,7 @@
                 <button id="voice-button">🎤 Speak</button>
             </div>
         </div>
-        <div class="card-base card-metrics">
-            <div class="metric-title">🏃‍♀️ Health Metrics</div>
-            <p style="opacity:0.7;font-size:13px;">Your current body metrics.</p>
         </div>
-    </div>
 </div>
 <script src="https://cdn.agora.io/sdk/release/AgoraRTC_N.js"></script>
 <script>
@@ -119,7 +125,10 @@ const sendButton = document.getElementById('send-button');
 const voiceButton = document.getElementById('voice-button');
 const loadingIndicator = document.getElementById('loading-indicator');
 
-function updateTime(){ const now=new Date(); document.getElementById('time-display').textContent=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+function updateTime(){ 
+    const now=new Date(); 
+    document.getElementById('time-display').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) + " " + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+}
 setInterval(updateTime,1000); updateTime();
 
 function appendMessage(contentHtml,role){
@@ -135,7 +144,15 @@ function setLoading(show){
     sendButton.innerHTML=show?'<div class="loading-spinner"></div> Wait':'<span>💬</span> Send';
 }
 function formatMessageContent(text,sources){
-    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');
+    let html = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/^- (.*)/gm, '<li>$1</li>') // Simple list conversion
+        .replace(/^(- |\* )/gm, '<li>')
+        .replace(/\n\n(<li>)/g, '<ul>$1')
+        .replace(/<\/li>\n(?!<li>)/g, '</li></ul>')
+        .replace(/\n/g, '<br>');
+    
     if(sources && sources.length){
         html+=`<div class="citation-section">Sources: ${sources.map((s,i)=>`<a href="${s.uri}" target="_blank" title="${s.title||'Source'}">[${i+1}]</a>`).join(' ')}</div>`;
     }
@@ -168,6 +185,12 @@ async function sendMessage(userQuery){
 }
 
 sendButton.onclick=()=>sendMessage(userInput.value);
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage(userInput.value);
+    }
+});
+
 
 async function sendMessageToGemini(query,retries=3){
     const systemPrompt="You are Agora AI, a voice-enabled AI Health Assistant. Provide concise, grounded health advice.";
